@@ -32,11 +32,7 @@ def get_index_mapping(index_text):
         nums = [str(level_counts[i]) for i in range(level + 1)]
         num_str = "_".join(nums)
         mapping[path] = num_str
-    print(mapping)
     return mapping
-
-
-
 
 def md_to_ipynb(md_content): 
     """将Markdown内容转换为ipynb格式的JSON数据"""
@@ -126,6 +122,50 @@ def md_to_ipynb(md_content):
     
     return ipynb_data
 
+def get_dir_index(md_dir, index_mapping):
+    """递归获取目录的索引编号"""
+    if not md_dir:
+        return ""
+    
+    # 检查当前目录是否有对应的索引
+    dir_md = f"{md_dir}.md"
+    if dir_md in index_mapping:
+        return index_mapping[dir_md]
+    
+    # 递归检查父目录
+    parent_dir = os.path.dirname(md_dir)
+    current_dir = os.path.basename(md_dir)
+    parent_index = get_dir_index(parent_dir, index_mapping)
+    
+    # 查找当前目录在父目录下的索引
+    for path, num in index_mapping.items():
+        if os.path.dirname(path) == parent_dir and os.path.basename(path) == f"{current_dir}.md":
+            return num
+    
+    return current_dir
+
+def build_indexed_path(md_path, index_mapping):
+    """构建带索引的路径"""
+    full_dir = os.path.dirname(md_path)
+    if not full_dir:
+        return ""
+    
+    # 拆分路径为各级目录
+    dir_parts = []
+    current_dir = full_dir
+    while current_dir:
+        dir_parts.insert(0, current_dir)
+        current_dir = os.path.dirname(current_dir)
+    
+    # 为每个目录部分添加索引
+    indexed_parts = []
+    for part in dir_parts:
+        dir_index = get_dir_index(part, index_mapping)
+        dir_name = os.path.basename(part)
+        indexed_parts.append(f"{dir_index}_{dir_name}" if dir_index else dir_name)
+    
+    return os.path.join(*indexed_parts)
+
 def process_files(index_path, input_dir, output_dir):
     with open(index_path, 'r', encoding='utf-8') as f:
         index_text = f.read()
@@ -153,24 +193,10 @@ def process_files(index_path, input_dir, output_dir):
         md_filename = os.path.basename(md_path)
         ipynb_filename = f"{num}_{os.path.splitext(md_filename)[0]}.ipynb"
         
-        # 找到这个文件对应的子目录的索引值
-        md_dir = os.path.dirname(md_path)
-        if md_dir:
-            dir_index = None
-            for path, num in index_mapping.items():
-                if os.path.dirname(path) == "" and os.path.basename(path) == f"{os.path.basename(md_dir)}.md":
-                    dir_index = num
-                    break
-            # 拼接编号前缀目录名
-            if dir_index:
-                dir_name = os.path.basename(md_dir)
-                indexed_dir = f"{dir_index}_{dir_name}"
-            else:
-                indexed_dir = md_dir
-            output_subdir = os.path.join(output_dir, indexed_dir)
-        else:
-            output_subdir = output_dir
-
+        # 构建带索引的多层目录路径
+        indexed_dir_path = build_indexed_path(md_path, index_mapping)
+        output_subdir = os.path.join(output_dir, indexed_dir_path)
+        
         os.makedirs(output_subdir, exist_ok=True)
         
         # 保存ipynb文件

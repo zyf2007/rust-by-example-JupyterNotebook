@@ -23,24 +23,21 @@ if __name__ == "__main__":
 - 保留原书的章节结构和内容排版（生成结果的文件名中带有索引↓）
 
 ```bash
-❯ tree ./JupyterNotebooks
-./JupyterNotebooks
+❯ tree ./Notebooks/
+./Notebooks/
 ├── 1_hello
 │   ├── 1_1_comment.ipynb
+│   ├── 1_2_print
+│   │   ├── 1_2_1_print_debug.ipynb
+│   │   ├── 1_2_2_print_display
+│   │   │   └── 1_2_3_testcase_list.ipynb
+│   │   ├── 1_2_2_print_display.ipynb
+│   │   └── 1_2_4_fmt.ipynb
 │   └── 1_2_print.ipynb
 ├── 2_primitives
 │   ├── 2_1_literals.ipynb
 │   ├── 2_2_tuples.ipynb
 │   └── 2_3_array.ipynb
-├── 3_custom_types
-│   ├── 3_1_structs.ipynb
-│   ├── 3_2_enum.ipynb
-│   └── 3_3_constants.ipynb
-├── 4_variable_bindings
-│   ├── 4_1_mut.ipynb
-│   ├── 4_2_scope.ipynb
-│   ├── 4_3_declare.ipynb
-│   └── 4_4_freeze.ipynb
 ...
 ```
 
