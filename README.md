@@ -1,4 +1,5 @@
 # Rust-by-Example （Jupyter Notebook 版）
+简体中文/[English](README-EN.md)
 
 将《Rust-by-Example》书籍内容转换为 Jupyter Notebook 格式，让你可以在任意支持 Jupyter 的 IDE/编辑器中更高效地学习 Rust 编程。仓库中包含转换完成的中文书籍文件，在 `Notebooks` 目录下。  
 
@@ -18,7 +19,7 @@ if __name__ == "__main__":
 这个项目将 [rust-by-example](https://github.com/rust-lang/rust-by-example) 项目中的 Markdown 文档批量转换为 Jupyter Notebook 文件（.ipynb）,让你能够：
 
 - 在你喜欢的 IDE（如 VS Code）中学习 Rust
-- 直接运行代码块，无需依赖官网环境（rustwiki.org上那个运行起来有点慢不是吗）
+- 直接运行代码块，无需依赖官网环境（doc.rust-lang.org 上那个运行起来有点慢不是吗）
 - 保留原书的章节结构和内容排版（生成结果的文件名中带有索引↓）
 
 ```bash
