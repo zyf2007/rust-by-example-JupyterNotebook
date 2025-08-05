@@ -1,89 +1,94 @@
-# Rust By Example
+# Rust-by-Example （Jupyter Notebook 版）
 
-[![Build Status](https://github.com/rust-lang/rust-by-example/actions/workflows/rbe.yml/badge.svg)](https://github.com/rust-lang/rust-by-example/actions)
+将《Rust-by-Example》书籍内容转换为 Jupyter Notebook 格式，让你可以在任意支持 Jupyter 的 IDE/编辑器中更高效地学习 Rust 编程。仓库中包含转换完成的中文书籍文件，在 `Notebooks` 目录下。  
 
-Learn Rust with examples (Live code editor included)
+**如果你使用的语言不是中文，可以下载 `generate.py` ，然后克隆自己语言版本的书籍。在使用此脚本生成 .ipynb 文件之前，记得按照下面的提示修改书籍源文件存储路径。**
+```python
+# 在 generate.py 文件的 __main__ 部分修改路径
+if __name__ == "__main__":
+    INDEX_PATH = "../rust-by-example-cn/src/SUMMARY.md"
+    INPUT_DIR = "../rust-by-example-cn/src/"
+    OUTPUT_DIR = "Notebooks" # 输出文件的父目录
+    
+    process_files(INDEX_PATH, INPUT_DIR, OUTPUT_DIR)
+    print("转换完成！")
+```
+## 工具简介
 
-## Using
+这个项目将 [rust-by-example](https://github.com/rust-lang/rust-by-example) 项目中的 Markdown 文档批量转换为 Jupyter Notebook 文件（.ipynb）,让你能够：
 
-If you'd like to read Rust by Example, you can visit <https://doc.rust-lang.org/rust-by-example/>
-to read it online.
-
-If you'd like to read it locally, [install Rust], and then:
+- 在你喜欢的 IDE（如 VS Code）中学习 Rust
+- 直接运行代码块，无需依赖官网环境（rustwiki.org上那个运行起来有点慢不是吗）
+- 保留原书的章节结构和内容排版（生成结果的文件名中带有索引↓）
 
 ```bash
-git clone https://github.com/rust-lang/rust-by-example
-cd rust-by-example
-cargo install mdbook
-mdbook build
-mdbook serve
+❯ tree ./JupyterNotebooks
+./JupyterNotebooks
+├── 1_hello
+│   ├── 1_1_comment.ipynb
+│   └── 1_2_print.ipynb
+├── 2_primitives
+│   ├── 2_1_literals.ipynb
+│   ├── 2_2_tuples.ipynb
+│   └── 2_3_array.ipynb
+├── 3_custom_types
+│   ├── 3_1_structs.ipynb
+│   ├── 3_2_enum.ipynb
+│   └── 3_3_constants.ipynb
+├── 4_variable_bindings
+│   ├── 4_1_mut.ipynb
+│   ├── 4_2_scope.ipynb
+│   ├── 4_3_declare.ipynb
+│   └── 4_4_freeze.ipynb
+...
 ```
 
-[install Rust]: https://www.rust-lang.org/tools/install
 
-To be able to run the examples, you must be connected to the internet; you can
-read all content offline, however!
+## 使用方法
 
-**The following warnings can be ignored safely.**
+### 前提条件
 
-```text
-[WARN] (mdbook::preprocess::cmd): The command wasn't found, is the "gettext" preprocessor installed?
-[WARN] (mdbook::preprocess::cmd):   Command: mdbook-gettext
-```
+- 已安装 Jupyter lab 环境
+- Rust 开发环境（我使用的是rustup）
 
-### Using translated version
+### 步骤
 
-If there is a translated resource in `po/` directory, it can be specified through `MDBOOK_BOOK__LANGUAGE` like below:
+1. 克隆本仓库
 
 ```bash
-git clone https://github.com/rust-lang/rust-by-example
-cd rust-by-example
-cargo install mdbook
-MDBOOK_BOOK__LANGUAGE=ja mdbook build
-MDBOOK_BOOK__LANGUAGE=ja mdbook serve
+git clone https://github.com/zyf2007/rust-by-example-JupyterNotebook.git
 ```
 
-## Contributing
+2. 克隆 rust-by-example 项目（或使用已有克隆）
 
-Please see the [CONTRIBUTING.md] file for more details.
+```bash
+git clone https://github.com/rust-lang/rust-by-example.git
+```
 
-[CONTRIBUTING.md]: https://github.com/rust-lang/rust-by-example/blob/master/CONTRIBUTING.md
+3. 修改脚本中的路径配置（generate.py）
 
-## Translating
+```python
+# 在 generate.py 文件的 __main__ 部分修改路径
+INDEX_PATH = "../rust-by-example/src/SUMMARY.md"  # 索引文件路径
+INPUT_DIR = "../rust-by-example/src/"            # Markdown 文件根目录
+OUTPUT_DIR = "JupyterNotebooks"                  # 输出目录
+```
 
-Please see the [TRANSLATING.md] file for more details.
+4. 运行转换脚本
 
-[TRANSLATING.md]: https://github.com/rust-lang/rust-by-example/blob/master/TRANSLATING.md
+```bash
+python generate.py
+```
+5. 配置 Rust 交互式解释器到 Jupyter
+```bash
+cargo install evcxr_jupyter
+evcxr_jupyter --install
+```
+6. 在生成的 `JupyterNotebooks` 目录中找到转换后的 .ipynb 文件，用你喜欢的编辑器打开即可开始学习
 
-### Translating guide for each languages
 
-* Japanese/日本語: [TRANSLATING_JA.md]
 
-[TRANSLATING_JA.md]: https://github.com/rust-lang/rust-by-example/blob/master/TRANSLATING_JA.md
+## 贡献
 
-* Chinese/中文: [TRANSLATING_ZH.md]
+欢迎提交 issues 和 pull requests 来改进这个工具！
 
-[TRANSLATING_ZH.md]: https://github.com/rust-lang/rust-by-example/blob/master/TRANSLATING_ZH.md
-
-## Translations to other languages
-
-* [Bulgarian](https://github.com/kberov/rust-by-example-bg)
-* [French](https://github.com/Songbird0/FR_RBE)
-* [Russian](https://github.com/ruRust/rust-by-example)
-* [Vietnamese](https://github.com/EyesCrypto-Insights/rust-by-example-vn)
-* [Portuguese](https://github.com/nazarepiedady/rust-com-exemplos)
-
-## License
-
-Rust by Example is licensed under either of
-
-* Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or
-  <http://www.apache.org/licenses/LICENSE-2.0>)
-* MIT license ([LICENSE-MIT](LICENSE-MIT) or
-  <http://opensource.org/licenses/MIT>)
-
-at your option.
-
-Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in Rust by Example by you, as defined in the Apache-2.0 license, shall be
-dually licensed as above, without any additional terms or conditions.
